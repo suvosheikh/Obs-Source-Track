@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OBS Source Tracker</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/material-components.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <span class="material-icons">live_tv</span>
+                <span class="brand-text">OBS Source Tracker</span>
+            </div>
+            <div class="nav-actions">
+                <div class="status-indicator">
+                    <span class="status-dot" id="globalStatusDot"></span>
+                    <span id="globalStatusText">Connecting...</span>
+                </div>
+                <div class="current-time" id="currentTime"></div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <nav class="sidebar-nav">
+                <a href="#realtime" class="nav-item active" data-tab="realtime">
+                    <span class="material-icons">monitor</span>
+                    <span class="nav-text">Live Monitor</span>
+                </a>
+                <a href="#management" class="nav-item" data-tab="management">
+                    <span class="material-icons">category</span>
+                    <span class="nav-text">Source Management</span>
+                </a>
+                <a href="#reports" class="nav-item" data-tab="reports">
+                    <span class="material-icons">analytics</span>
+                    <span class="nav-text">Reports</span>
+                </a>
+                <a href="#settings" class="nav-item" data-tab="settings">
+                    <span class="material-icons">settings</span>
+                    <span class="nav-text">Settings</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Realtime Monitor Tab -->
+            <div id="realtime" class="tab-content active">
+                <div class="tab-header">
+                    <h1 class="tab-title">
+                        <span class="material-icons">monitor</span>
+                        Live Monitor
+                    </h1>
+                    <div class="tab-actions">
+                        <button class="btn btn-outlined" id="refreshBtn">
+                            <span class="material-icons">refresh</span>
+                            Refresh
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon primary">
+                            <span class="material-icons">video_library</span>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number" id="totalSources">0</div>
+                            <div class="stat-label">Total Sources</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon success">
+                            <span class="material-icons">live_tv</span>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number" id="activeSources">0</div>
+                            <div class="stat-label">Active Now</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon warning">
+                            <span class="material-icons">play_arrow</span>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number" id="totalShows">0</div>
+                            <div class="stat-label">Total Shows</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon info">
+                            <span class="material-icons">schedule</span>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number" id="totalDuration">0s</div>
+                            <div class="stat-label">Total Duration</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Active Sources Table -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Active Sources</h3>
+                        <div class="card-actions">
+                            <span class="last-update">Last update: <span id="lastUpdateTime">Never</span></span>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Source</th>
+                                        <th>Status</th>
+                                        <th>Current Session</th>
+                                        <th>Show Count</th>
+                                        <th>Last Visible</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="realtimeBody">
+                                    <tr>
+                                        <td colspan="5" class="empty-state">
+                                            <span class="material-icons">info</span>
+                                            <p>No sources detected. Start your OBS stream.</p>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Source Management Tab -->
+            <div id="management" class="tab-content">
+                <div class="tab-header">
+                    <h1 class="tab-title">
+                        <span class="material-icons">category</span>
+                        Source Management
+                    </h1>
+                    <button class="btn btn-primary" id="addSourceBtn">
+                        <span class="material-icons">add</span>
+                        Add Source
+                    </button>
+                </div>
+
+                <!-- Source Metadata Table -->
+                <div class="card">
+    <div class="card-header">
+        <h3 class="card-title">Source Metadata</h3>
+    </div>
+    <div class="card-content">
+        <div class="table-container">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Source Name</th>
+                        <th>Title</th>
+                        <th>Category</th>
+                        <th>Brand</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="metadataBody">
+                    <tr>
+                        <td colspan="4" class="empty-state">
+                            <span class="material-icons">category</span>
+                            <p>No source metadata added yet.</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+            </div>
+
+            <!-- Reports Tab -->
+            <div id="reports" class="tab-content">
+                <div class="tab-header">
+                    <h1 class="tab-title">
+                        <span class="material-icons">analytics</span>
+                        Reports & Analytics
+                    </h1>
+                    <div class="date-filter">
+                        <input type="date" id="reportDate" class="form-input">
+                        <button class="btn btn-outlined" id="exportBtn">
+                            <span class="material-icons">download</span>
+                            Export
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Reports Content -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Daily Report</h3>
+                    </div>
+                    <div class="card-content">
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Source</th>
+                                        <th>Category</th>
+                                        <th>Brand</th>
+                                        <th>Show Count</th>
+                                        <th>Total Duration</th>
+                                        <th>Avg. Duration</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="reportsBody">
+                                    <tr>
+                                        <td colspan="6" class="empty-state">
+                                            <span class="material-icons">analytics</span>
+                                            <p>Select a date to view reports.</p>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Tab -->
+            <div id="settings" class="tab-content">
+                <div class="tab-header">
+                    <h1 class="tab-title">
+                        <span class="material-icons">settings</span>
+                        Settings
+                    </h1>
+                </div>
+
+                <div class="settings-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">OBS Connection</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="form-group">
+                                <label class="form-label">Host</label>
+                                <input type="text" class="form-input" value="192.168.111.80" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Port</label>
+                                <input type="number" class="form-input" value="4455" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Status</label>
+                                <div class="status-badge" id="obsStatus">
+                                    <span class="material-icons">check_circle</span>
+                                    Connected
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Data Management</h3>
+                        </div>
+                        <div class="card-content">
+                            <button class="btn btn-outlined full-width">
+                                <span class="material-icons">archive</span>
+                                Export Database
+                            </button>
+                            <button class="btn btn-outlined full-width mt-2">
+                                <span class="material-icons">delete</span>
+                                Clear Old Data
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add Source Modal -->
+<div id="sourceModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Add Source Metadata</h3>
+            <button class="modal-close" id="modalClose">
+                <span class="material-icons">close</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form id="sourceForm">
+                <div class="form-group">
+                    <label class="form-label">Source Name *</label>
+                    <select class="form-input" id="sourceName" required>
+                        <option value="">Select a source</option>
+                    </select>
+                    <div class="form-help">Select the source name from OBS</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Display Title *</label>
+                    <input type="text" class="form-input" id="sourceTitle" required 
+                           placeholder="Enter display name for this source">
+                    <div class="form-help">This will be shown in the dashboard</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Category *</label>
+                    <input type="text" class="form-input" id="sourceCategory" required 
+                           placeholder="e.g., Camera, Overlay, Audio">
+                    <div class="form-help">Categorize your sources for better organization</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Brand</label>
+                    <input type="text" class="form-input" id="sourceBrand" 
+                           placeholder="e.g., Sony, Logitech, Custom">
+                    <div class="form-help">Brand or manufacturer (optional)</div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-outlined" id="modalCancel">Cancel</button>
+            <button type="button" class="btn btn-primary" id="modalSave">Save</button>
+        </div>
+    </div>
+</div>
+
+    <!-- Scripts -->
+    <script src="js/utils.js"></script>
+    <script src="js/realtime.js"></script>
+    <script src="js/management.js"></script>
+    <script src="js/reports.js"></script>
+    <script src="js/settings.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+// Immediate test script
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🚀 DOM Loaded - Testing APIs...');
+    
+    // Test API connection immediately
+    fetch('http://localhost:3000/api/active')
+        .then(response => response.json())
+        .then(data => {
+            console.log('✅ API Test Successful:', data);
+            
+            // Force initialize if APIs are working
+            if (typeof RealTimeManager !== 'undefined') {
+                RealTimeManager.fetchRealTimeData();
+            }
+        })
+        .catch(error => {
+            console.error('❌ API Test Failed:', error);
+        });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,342 @@
+/* Clean Professional Dark Theme for OBS Source Tracker */
+
+/* Active Source Highlight - Clean Version */
+.active-source {
+  background: rgba(129, 201, 149, 0.08) !important;
+  border-left: 3px solid var(--success-color);
+  position: relative;
+}
+
+/* Session Duration Styles - Clean */
+.session-duration {
+  color: var(--success-color);
+  font-weight: 600;
+  background: rgba(129, 201, 149, 0.15);
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  border: 1px solid rgba(129, 201, 149, 0.3);
+}
+
+.session-status {
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  padding: 4px 8px;
+}
+
+/* Count Badge - Clean */
+.count-badge {
+  background: rgba(138, 180, 248, 0.15);
+  color: var(--primary-color);
+  padding: 4px 8px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.75rem;
+  border: 1px solid rgba(138, 180, 248, 0.3);
+}
+
+/* Color Tag Display - Clean */
+.color-tag {
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  display: inline-block;
+  border: 1px solid var(--border-color);
+}
+
+/* Action Buttons - Clean */
+.action-buttons {
+  display: flex;
+  gap: 6px;
+}
+
+.action-btn {
+  background: var(--surface-container);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.action-btn:hover {
+  background: var(--surface-container-high);
+  border-color: var(--text-secondary);
+}
+
+.action-btn.edit:hover {
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.action-btn.delete:hover {
+  color: var(--error-color);
+  border-color: var(--error-color);
+}
+
+.action-btn .material-icons {
+  font-size: 16px;
+}
+
+/* Source Name Styling - Clean */
+.source-name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.category-tag {
+  background: var(--surface-container);
+  color: var(--text-secondary);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  border: 1px solid var(--border-color);
+}
+
+/* Connection Status - Clean */
+.connection-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  border: 1px solid;
+}
+
+.connection-status.connected {
+  background: rgba(129, 201, 149, 0.1);
+  color: var(--success-color);
+  border-color: rgba(129, 201, 149, 0.3);
+}
+
+.connection-status.disconnected {
+  background: rgba(242, 139, 130, 0.1);
+  color: var(--error-color);
+  border-color: rgba(242, 139, 130, 0.3);
+}
+
+/* Live Badge - Clean */
+.live-badge {
+  background: var(--error-color);
+  color: white;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.65rem;
+  font-weight: 700;
+}
+
+/* Loading Animation - Clean */
+.loading {
+  position: relative;
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--border-color);
+  border-top: 2px solid var(--primary-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes spin {
+  0% { transform: translate(-50%, -50%) rotate(0deg); }
+  100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Notification Toast - Clean */
+.toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 12px 16px;
+  background: var(--surface-color);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transform: translateX(400px);
+  opacity: 0;
+  transition: all 0.3s ease;
+  z-index: 1000;
+  border: 1px solid var(--border-color);
+  max-width: 300px;
+}
+
+.toast.show {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.toast.success {
+  border-left: 3px solid var(--success-color);
+}
+
+.toast.error {
+  border-left: 3px solid var(--error-color);
+}
+
+.toast .material-icons {
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.toast.success .material-icons {
+  color: var(--success-color);
+}
+
+.toast.error .material-icons {
+  color: var(--error-color);
+}
+
+/* Focus States for Accessibility */
+.btn:focus-visible,
+.form-input:focus-visible,
+.action-btn:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 1px;
+}
+
+/* Selection Styles */
+::selection {
+  background: rgba(138, 180, 248, 0.3);
+}
+
+/* Responsive Table */
+@media (max-width: 768px) {
+  .data-table {
+    font-size: 0.8rem;
+  }
+  
+  .data-table th,
+  .data-table td {
+    padding: 10px 6px;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+    gap: 4px;
+  }
+  
+  .source-name {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+  
+  .category-tag {
+    font-size: 0.65rem;
+  }
+}
+
+/* Utility Classes */
+.text-muted {
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+}
+
+.mt-1 {
+  margin-top: 4px;
+}
+
+.mb-1 {
+  margin-bottom: 4px;
+}
+
+/* Print Styles */
+@media print {
+  .navbar,
+  .sidebar,
+  .btn,
+  .action-buttons,
+  .card-actions {
+    display: none !important;
+  }
+  
+  .main-container {
+    display: block;
+  }
+  
+  .main-content {
+    padding: 0;
+  }
+  
+  .card {
+    box-shadow: none;
+    border: 1px solid #000;
+    break-inside: avoid;
+  }
+  
+  body {
+    background: white !important;
+    color: black !important;
+  }
+}
+
+/* Quick Edit Button in Realtime Table */
+.quick-edit {
+    background: transparent !important;
+    border: 1px solid var(--border-color) !important;
+    padding: 4px !important;
+    margin-left: 8px;
+    opacity: 0;
+    transition: all 0.3s var(--ease-out);
+}
+
+.source-name:hover .quick-edit {
+    opacity: 1;
+}
+
+.quick-edit:hover {
+    background: var(--surface-container) !important;
+    border-color: var(--primary-color) !important;
+    color: var(--primary-color) !important;
+    transform: scale(1.1);
+}
+
+/* Form Improvements */
+.form-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    margin-top: 24px;
+}
+
+.form-help {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-top: 4px;
+}
+
+/* Modal Enhancements */
+.modal-body {
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+/* Source Name in Edit Mode */
+.source-name-edit {
+    background: var(--surface-container);
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    font-weight: 500;
+    color: var(--text-primary);
+}
